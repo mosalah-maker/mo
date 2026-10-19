@@ -1,995 +1,578 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>تأكيد حجز الامتحان - Abo Zahra</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%23F59E0B'>👑</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Cairo', sans-serif;
-            min-height: 100vh;
-            background: #0F0A1A;
-            color: #F3E8FF;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-            position: relative;
-            overflow-x: hidden;
-        }
-        body.modal-open { overflow: hidden; }
-
-        .admin-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            background: radial-gradient(circle at 70% 20%, rgba(245, 158, 11, 0.06) 0%, #0F0A1A 90%);
-        }
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            overflow: hidden;
-        }
-        .bg-gradient {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 40%, rgba(245, 158, 11, 0.05) 0%, #0F0A1A 90%);
-            animation: breatheBg 8s ease-in-out infinite;
-        }
-        @keyframes breatheBg {
-            0%, 100% { opacity: 0.7; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.02); }
-        }
-        .star-field {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(2px 2px at 15% 30%, #F59E0B, rgba(0,0,0,0)), radial-gradient(3px 3px at 75% 60%, #FCD34D, rgba(0,0,0,0)), radial-gradient(1px 1px at 90% 20%, #F59E0B, rgba(0,0,0,0)), radial-gradient(2px 2px at 45% 85%, #D97706, rgba(0,0,0,0)), radial-gradient(4px 4px at 10% 70%, #FBBF24, rgba(0,0,0,0));
-            background-repeat: no-repeat;
-            background-size: 200px 200px;
-            animation: starMove 40s linear infinite;
-            opacity: 0.3;
-        }
-        @keyframes starMove {
-            0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
-            100% { background-position: 100% 100%, 80% 70%, 120% 50%, 60% 90%, 40% 110%; }
-        }
-        .gold-ring {
-            position: absolute;
-            border: 2px solid rgba(245, 158, 11, 0.08);
-            border-radius: 50%;
-            animation: floatRing 20s infinite linear;
-        }
-        .ring1 { width: 250px; height: 250px; top: -80px; right: -80px; border-width: 1px; animation-duration: 25s; border-color: rgba(245, 158, 11, 0.12); }
-        .ring2 { width: 400px; height: 400px; bottom: -120px; left: -120px; border-width: 2px; animation-duration: 35s; animation-direction: reverse; border-color: rgba(251, 191, 36, 0.06); }
-        .ring3 { width: 150px; height: 150px; top: 40%; left: 5%; border-width: 1px; animation-duration: 18s; border-color: rgba(217, 119, 6, 0.08); }
-        @keyframes floatRing {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .confirm-card {
-            position: relative;
-            z-index: 20;
-            width: 100%;
-            max-width: 620px;
-            background: rgba(26, 18, 37, 0.85);
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(245, 158, 11, 0.08);
-            border-radius: 40px;
-            padding: 28px 26px 32px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.02);
-        }
-
-        .hero { text-align: center; margin-bottom: 24px; }
-        .logo-animation { display: flex; justify-content: center; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
-        .logo-icon { 
-            width: 60px; height: 60px; 
-            background: linear-gradient(145deg, #1A1225, #0F0A1A); 
-            border-radius: 20px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 30px; 
-            border: 1px solid rgba(245, 158, 11, 0.2); 
-            box-shadow: 0 0 30px rgba(245, 158, 11, 0.04);
-        }
-        .brand-name { 
-            font-size: 30px; font-weight: 900; 
-            background: linear-gradient(135deg, #F59E0B, #FCD34D, #D97706);
-            -webkit-background-clip: text; background-clip: text; color: transparent; 
-            background-size: 300% 300%;
-            animation: gradientGold 4s ease infinite;
-        }
-        @keyframes gradientGold {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .sub-title { 
-            font-size: 15px; font-weight: 700; color: #F59E0B; 
-            display: inline-block; background: rgba(15, 10, 26, 0.6); 
-            padding: 6px 18px; border-radius: 40px; 
-        }
-        .glow-badge { 
-            display: inline-flex; align-items: center; gap: 8px; 
-            background: rgba(245, 158, 11, 0.04); 
-            border: 1px solid rgba(245, 158, 11, 0.12); 
-            border-radius: 50px; padding: 6px 16px; margin-top: 12px; 
-            font-size: 11px; color: #D4C4E6; backdrop-filter: blur(10px);
-        }
-        .glow-badge i { color: #F59E0B; font-size: 14px; }
-
-        .customer-info {
-            background: rgba(15, 10, 26, 0.6);
-            border-radius: 20px;
-            padding: 18px;
-            margin: 15px 0;
-            border: 1px solid rgba(245, 158, 11, 0.04);
-        }
-        .customer-info p {
-            margin: 8px 0;
-            font-size: 14px;
-            color: #D4C4E6;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            border-bottom: 1px solid rgba(245, 158, 11, 0.02);
-            padding-bottom: 6px;
-        }
-        .customer-info p:last-child { border-bottom: none; }
-        .customer-info .label {
-            color: #F59E0B;
-            font-weight: 600;
-            font-size: 13px;
-        }
-        .customer-info .value {
-            color: #F3E8FF;
-            font-weight: 700;
-            font-size: 14px;
-            direction: ltr;
-            text-align: left;
-        }
-
-        /* ===== قسم الامتحان - بعد التأكيد ===== */
-        .exam-section {
-            background: rgba(245, 158, 11, 0.04);
-            border-radius: 20px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-            border: 1px solid rgba(245, 158, 11, 0.06);
-            display: none;
-        }
-        .exam-section .exam-link {
-            display: block;
-            padding: 14px 20px;
-            background: rgba(15, 10, 26, 0.6);
-            border-radius: 16px;
-            margin: 10px 0;
-            color: #FCD34D;
-            font-weight: 700;
-            font-size: 16px;
-            word-break: break-all;
-            border: 1px solid rgba(245, 158, 11, 0.08);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .exam-section .exam-link:hover {
-            border-color: #F59E0B;
-            background: rgba(245, 158, 11, 0.06);
-        }
-        .exam-section .exam-link i {
-            margin-left: 10px;
-            color: #F59E0B;
-        }
-        .exam-section .status-badge-exam {
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 14px;
-            margin-top: 8px;
-        }
-        .status-badge-exam.confirmed {
-            background: rgba(16, 185, 129, 0.15);
-            color: #34D399;
-            border: 1px solid rgba(16, 185, 129, 0.25);
-        }
-        .status-badge-exam.pending {
-            background: rgba(245, 158, 11, 0.15);
-            color: #FBBF24;
-            border: 1px solid rgba(245, 158, 11, 0.25);
-        }
-        .status-badge-exam.cancelled {
-            background: rgba(239, 68, 68, 0.15);
-            color: #F87171;
-            border: 1px solid rgba(239, 68, 68, 0.25);
-        }
-        .exam-section .confirmation-message {
-            color: #34D399;
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-        .exam-section .confirmation-message i {
-            margin-left: 8px;
-        }
-        .exam-section .exam-link-placeholder {
-            display: block;
-            padding: 14px 20px;
-            background: rgba(15, 10, 26, 0.6);
-            border-radius: 16px;
-            margin: 10px 0;
-            color: #F87171;
-            font-weight: 700;
-            font-size: 16px;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-        .exam-section .exam-link-placeholder i {
-            margin-left: 10px;
-            color: #F87171;
-        }
-
-        /* ===== معلومات الدفع ===== */
-        .bank-number {
-            background: rgba(15, 10, 26, 0.6);
-            padding: 20px;
-            border-radius: 20px;
-            text-align: center;
-            margin: 20px 0;
-            border: 1px solid rgba(245, 158, 11, 0.04);
-            display: none;
-        }
-        .bank-number .amount {
-            font-size: 32px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #F59E0B, #FCD34D);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .bank-number .number {
-            font-size: 28px;
-            font-weight: 900;
-            color: #F59E0B;
-            letter-spacing: 2px;
-            background: rgba(245, 158, 11, 0.04);
-            padding: 8px 20px;
-            border-radius: 16px;
-            display: inline-block;
-            margin: 8px 0;
-            border: 1px solid rgba(245, 158, 11, 0.06);
-        }
-        .bank-number .name {
-            color: #FCD34D;
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .form-group { margin-bottom: 16px; text-align: right; }
-        .form-group label { font-size: 13px; font-weight: 700; color: #F59E0B; margin-bottom: 6px; display: block; }
-        .form-group label .required { color: #F87171; }
-        .input-wrapper { position: relative; }
-        .input-wrapper .input-icon { 
-            position: absolute; right: 16px; top: 50%; transform: translateY(-50%); 
-            font-size: 14px; color: #F59E0B; opacity: 0.5;
-        }
-        .form-group input { 
-            width: 100%; padding: 12px 44px 12px 16px; 
-            background: rgba(15, 10, 26, 0.8); 
-            border: 1px solid rgba(245, 158, 11, 0.08); 
-            border-radius: 16px; color: #F3E8FF; 
-            font-family: 'Cairo', sans-serif; font-size: 14px; 
-            transition: all 0.3s ease; text-align: right; 
-        }
-        .form-group input:focus { 
-            border-color: #F59E0B; outline: none; 
-            background: rgba(15, 10, 26, 0.95); 
-            box-shadow: 0 0 40px rgba(245, 158, 11, 0.04), inset 0 0 30px rgba(245, 158, 11, 0.01);
-        }
-        .form-group input::placeholder { color: rgba(243, 232, 255, 0.2); }
-
-        .upload-area {
-            border: 2px dashed rgba(245, 158, 11, 0.12);
-            border-radius: 24px;
-            padding: 30px;
-            text-align: center;
-            margin: 20px 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: rgba(15, 10, 26, 0.4);
-            display: none;
-        }
-        .upload-area:hover {
-            border-color: #F59E0B;
-            background: rgba(245, 158, 11, 0.04);
-            box-shadow: 0 0 40px rgba(245, 158, 11, 0.03);
-        }
-        .upload-area i {
-            font-size: 48px;
-            color: #F59E0B;
-            margin-bottom: 12px;
-            opacity: 0.5;
-            transition: all 0.3s;
-        }
-        .upload-area:hover i {
-            opacity: 1;
-            transform: scale(1.05);
-        }
-        .upload-area p {
-            color: #D4C4E6;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .upload-area .hint {
-            font-size: 12px;
-            color: rgba(243, 232, 255, 0.2);
-            margin-top: 4px;
-        }
-        .preview-img {
-            max-width: 100%;
-            max-height: 250px;
-            border-radius: 16px;
-            margin-top: 15px;
-            display: none;
-            border: 2px solid rgba(245, 158, 11, 0.12);
-            object-fit: contain;
-        }
-
-        .upload-btn { 
-            width: 100%; padding: 14px; 
-            background: linear-gradient(135deg, #F59E0B, #D97706); 
-            border: none; border-radius: 20px; color: #0F0A1A; 
-            font-weight: 800; font-size: 16px; 
-            display: none;
-            align-items: center;
-            justify-content: center; gap: 10px; 
-            margin-top: 22px; cursor: pointer; transition: all 0.3s ease; 
-            position: relative; overflow: hidden;
-        }
-        .upload-btn::after {
-            content: ''; position: absolute; inset: 0; 
-            background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .upload-btn:hover::after { opacity: 1; }
-        .upload-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(245, 158, 11, 0.25); }
-        .upload-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .upload-btn:disabled::after { display: none; }
-
-        .message {
-            margin-top: 20px;
-            text-align: center;
-            padding: 14px;
-            border-radius: 16px;
-            font-weight: 600;
-            font-size: 14px;
-            display: none;
-        }
-        .message.success {
-            background: rgba(16, 185, 129, 0.08);
-            color: #34D399;
-            border: 1px solid rgba(16, 185, 129, 0.12);
-        }
-        .message.error {
-            background: rgba(239, 68, 68, 0.08);
-            color: #F87171;
-            border: 1px solid rgba(239, 68, 68, 0.12);
-        }
-        .message.loading {
-            background: rgba(245, 158, 11, 0.04);
-            color: #F59E0B;
-            border: 1px solid rgba(245, 158, 11, 0.06);
-        }
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(245, 158, 11, 0.12);
-            border-top-color: #F59E0B;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .already-confirmed {
-            text-align: center;
-            padding: 24px;
-            background: rgba(16, 185, 129, 0.04);
-            border-radius: 20px;
-            margin: 20px 0;
-            border: 1px solid rgba(16, 185, 129, 0.06);
-            display: none;
-        }
-        .already-confirmed .icon {
-            font-size: 48px;
-            color: #34D399;
-            margin-bottom: 12px;
-            display: block;
-        }
-        .already-confirmed h3 {
-            color: #34D399;
-            font-size: 20px;
-            margin-bottom: 8px;
-        }
-        .already-confirmed p {
-            color: #D4C4E6;
-            font-size: 14px;
-        }
-
-        .loading-state {
-            text-align: center;
-            padding: 30px 20px;
-        }
-        .loading-state .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(245, 158, 11, 0.04);
-            border-top-color: #F59E0B;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 16px;
-        }
-        .loading-state p {
-            color: rgba(243, 232, 255, 0.3);
-            font-size: 14px;
-        }
-
-        .btn-wa-exam {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            margin-top: 16px;
-            border-radius: 16px;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 16px;
-            text-align: center;
-            transition: all 0.3s;
-            background: #25D366;
-            color: #0F0A1A;
-        }
-        .btn-wa-exam:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.2);
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 25px;
-            padding-top: 18px;
-            border-top: 1px solid rgba(245, 158, 11, 0.04);
-            font-size: 12px;
-            color: rgba(243, 232, 255, 0.2);
-        }
-        .footer i {
-            color: #F59E0B;
-        }
-
-        @media (max-width: 600px) {
-            .confirm-card { padding: 20px 16px 24px; }
-            .logo-icon { width: 50px; height: 50px; font-size: 24px; }
-            .brand-name { font-size: 24px; }
-            .customer-info p { flex-direction: column; align-items: flex-start; gap: 2px; }
-            .customer-info .value { text-align: right; width: 100%; }
-            .bank-number .amount { font-size: 24px; }
-            .bank-number .number { font-size: 22px; }
-            .exam-section .exam-link { font-size: 14px; padding: 12px 16px; }
-        }
-        @media (min-width: 768px) { 
-            .confirm-card { padding: 32px 36px 36px; } 
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#120e16">
+  <title>تأكيد حجز الامتحان | Abo Zahra</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #120e16;
+      --surface: #1d1822;
+      --surface-2: #15111a;
+      --border: #39303e;
+      --text: #f7f2fa;
+      --muted: #b9aebf;
+      --gold: #e9b94e;
+      --gold-dark: #c98e22;
+      --green: #42d39a;
+      --red: #ff7777;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; padding: 24px 14px 32px;
+      background: radial-gradient(900px 480px at 50% -180px, #3a2a17 0%, transparent 70%), var(--bg);
+      color: var(--text); font-family: 'Cairo', sans-serif; line-height: 1.65;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .shell { width: 100%; max-width: 620px; margin: 0 auto; }
+    .brand { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 18px; }
+    .brand-mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; background: var(--gold); color: #19120a; font-size: 22px; }
+    .brand-name { color: var(--gold); font-size: 25px; line-height: 1.1; font-weight: 900; }
+    .brand-caption { margin-top: 3px; color: var(--muted); font-size: 11px; letter-spacing: .7px; }
+    .card { border: 1px solid var(--border); background: rgba(29,24,34,.97); border-radius: 23px; padding: 24px; box-shadow: 0 20px 55px rgba(0,0,0,.25); }
+    .page-heading { text-align: center; margin-bottom: 20px; }
+    h1 { margin: 0; font-size: clamp(23px, 4vw, 29px); font-weight: 900; }
+    .intro { color: var(--muted); font-size: 14px; margin: 5px 0 0; }
+    [hidden] { display: none !important; }
+    .loading, .notice { padding: 17px; border-radius: 14px; background: var(--surface-2); border: 1px solid var(--border); color: var(--muted); text-align: center; }
+    .loading i { color: var(--gold); margin-left: 8px; }
+    .customer-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 16px; padding: 15px 16px; margin-bottom: 19px; }
+    .customer-title { display: flex; align-items: center; gap: 8px; color: var(--gold); font-weight: 800; margin-bottom: 10px; }
+    .details-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+    .detail { min-width: 0; }
+    .detail-label { color: var(--muted); font-size: 12px; }
+    .detail-value { font-weight: 700; font-size: 14px; overflow-wrap: anywhere; }
+    .detail-value.ltr { direction: ltr; text-align: right; }
+    .section-heading { margin: 0 0 5px; font-weight: 800; font-size: 18px; }
+    .section-note { color: var(--muted); font-size: 13px; margin: 0 0 15px; }
+    .steps { display: flex; align-items: center; gap: 8px; margin: 15px 0 18px; }
+    .step { flex: 1; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
+    .step-number { flex: 0 0 27px; width: 27px; height: 27px; border-radius: 50%; display: grid; place-items: center; background: #342b3b; color: #fff; font-weight: 800; }
+    .step.active .step-number { background: var(--gold); color: #1d1609; }
+    .step.active { color: var(--text); }
+    .step-line { height: 1px; flex: .25; background: var(--border); }
+    .transfer-box { border: 1px solid #5a4727; background: linear-gradient(135deg, rgba(233,185,78,.09), rgba(21,17,26,.85)); border-radius: 17px; padding: 17px; margin-bottom: 18px; }
+    .amount-label { color: var(--muted); font-size: 13px; }
+    .amount { font-size: 31px; line-height: 1.35; font-weight: 900; color: var(--gold); }
+    .transfer-divider { border: 0; border-top: 1px solid var(--border); margin: 14px 0; }
+    .cash-label { color: var(--muted); font-size: 13px; }
+    .cash-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 5px; }
+    .cash-number { color: var(--text); font-size: clamp(20px, 4.5vw, 26px); font-weight: 900; direction: ltr; letter-spacing: .5px; }
+    .copy-btn { display: inline-flex; align-items: center; gap: 7px; padding: 8px 12px; border: 1px solid var(--border); background: #2a2330; color: var(--gold); border-radius: 10px; font-size: 12px; font-weight: 800; }
+    .account-name { margin-top: 5px; color: var(--muted); font-size: 12px; }
+    .field { margin: 17px 0; }
+    .field label { display: block; margin-bottom: 7px; font-size: 13px; font-weight: 800; }
+    .required { color: var(--gold); }
+    .input-wrap { position: relative; }
+    .input-wrap i { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+    .input-wrap input { width: 100%; min-height: 48px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); color: var(--text); padding: 11px 42px 11px 13px; outline: none; direction: ltr; text-align: right; }
+    .input-wrap input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(233,185,78,.1); }
+    .upload-box { display: flex; align-items: center; gap: 13px; width: 100%; padding: 15px; background: var(--surface-2); border: 1px dashed #7a6133; border-radius: 14px; text-align: right; color: var(--text); }
+    .upload-icon { flex: 0 0 42px; width: 42px; height: 42px; display: grid; place-items: center; border-radius: 12px; background: rgba(233,185,78,.12); color: var(--gold); font-size: 18px; }
+    .upload-text { display: block; font-weight: 800; font-size: 14px; }
+    .upload-hint { display: block; color: var(--muted); font-size: 11px; margin-top: 2px; font-weight: 400; }
+    .preview-wrap { margin-top: 12px; padding: 12px; border: 1px solid var(--border); border-radius: 13px; background: var(--surface-2); }
+    .preview-img { display: block; max-width: 100%; max-height: 230px; margin: 0 auto; border-radius: 8px; object-fit: contain; }
+    .preview-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; font-size: 12px; color: var(--muted); }
+    .remove-btn { color: var(--red); background: transparent; border: 0; padding: 5px; font-weight: 700; }
+    .primary-btn { width: 100%; min-height: 51px; border: 0; border-radius: 13px; margin-top: 17px; padding: 12px 16px; background: linear-gradient(135deg, #f1ca66, #d99b2d); color: #1b1409; font-weight: 900; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 9px; }
+    .primary-btn:disabled { opacity: .65; cursor: wait; }
+    .message { margin-top: 14px; padding: 12px 14px; border-radius: 12px; font-size: 13px; font-weight: 700; overflow-wrap: anywhere; }
+    .message.success { background: rgba(66,211,154,.1); color: var(--green); border: 1px solid rgba(66,211,154,.25); }
+    .message.error { background: rgba(255,119,119,.1); color: var(--red); border: 1px solid rgba(255,119,119,.25); }
+    .message.loading { background: rgba(233,185,78,.08); color: var(--gold); border: 1px solid rgba(233,185,78,.2); }
+    .status-panel { border-radius: 16px; padding: 20px 17px; text-align: center; margin: 16px 0; border: 1px solid var(--border); background: var(--surface-2); }
+    .status-icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 10px; font-size: 23px; }
+    .status-panel h2 { margin: 0 0 5px; font-size: 19px; }
+    .status-panel p { margin: 0; color: var(--muted); font-size: 13px; }
+    .status-panel.pending .status-icon { color: var(--gold); background: rgba(233,185,78,.12); }
+    .status-panel.pending h2 { color: var(--gold); }
+    .status-panel.good .status-icon { color: var(--green); background: rgba(66,211,154,.12); }
+    .status-panel.good h2 { color: var(--green); }
+    .status-panel.bad .status-icon { color: var(--red); background: rgba(255,119,119,.12); }
+    .status-panel.bad h2 { color: var(--red); }
+    .exam-link-btn, .whatsapp-btn { display: flex; justify-content: center; align-items: center; gap: 9px; width: 100%; text-decoration: none; border-radius: 12px; padding: 13px 16px; margin-top: 15px; font-weight: 900; }
+    .exam-link-btn { background: var(--gold); color: #1b1409; }
+    .whatsapp-btn { background: #25d366; color: #072c17; }
+    .footer { color: #877c8d; text-align: center; font-size: 11px; margin-top: 17px; }
+    .footer i { color: var(--gold); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    @media (max-width: 480px) {
+      body { padding: 16px 10px 24px; }
+      .card { padding: 19px 15px; border-radius: 18px; }
+      .brand-name { font-size: 23px; }
+      .details-grid { grid-template-columns: 1fr 1fr; gap: 11px 8px; }
+      .detail-value { font-size: 13px; }
+      .step { font-size: 11px; gap: 6px; }
+      .step-line { flex: .12; }
+      .cash-row { align-items: flex-start; }
+      .copy-btn { padding: 7px 9px; }
+      .upload-box { padding: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
+  </style>
 </head>
 <body>
+  <div class="shell">
+    <header class="brand" aria-label="Abo Zahra">
+      <div class="brand-mark" aria-hidden="true"><i class="fas fa-crown"></i></div>
+      <div>
+        <div class="brand-name">Abo Zahra</div>
+        <div class="brand-caption">حجز الامتحانات</div>
+      </div>
+    </header>
 
-<div class="admin-bg"></div>
-<div class="animated-bg">
-    <div class="bg-gradient"></div>
-    <div class="star-field"></div>
-    <div class="gold-ring ring1"></div>
-    <div class="gold-ring ring2"></div>
-    <div class="gold-ring ring3"></div>
-</div>
+    <main class="card">
+      <div class="page-heading">
+        <h1>تأكيد حجز الامتحان</h1>
+        <p class="intro">راجع بياناتك واتبع الخطوات البسيطة لإكمال الحجز.</p>
+      </div>
 
-<div class="confirm-card" id="confirmCard">
-    <div class="hero">
-        <div class="logo-animation">
-            <div class="logo-icon">👑</div>
-            <div class="brand-name">Abo Zahra</div>
-        </div>
-        <div class="sub-title">✅ تأكيد حجز الامتحان</div>
-        <div class="glow-badge">
-            <i class="fas fa-graduation-cap"></i> حجز آمن · تأكيد فوري <i class="fas fa-bolt"></i>
-        </div>
-    </div>
+      <div id="loadingState" class="loading" role="status"><i class="fas fa-circle-notch fa-spin"></i> جاري تحميل بيانات الحجز...</div>
+      <div id="errorState" class="notice" hidden role="alert"></div>
 
-    <!-- ===== معلومات العميل ===== -->
-    <div id="customerInfo" class="customer-info">
-        <div class="loading-state">
-            <div class="spinner"></div>
-            <p>جاري تحميل بياناتك...</p>
+      <section id="customerInfo" class="customer-card" hidden aria-label="بيانات الحجز"></section>
+
+      <section id="paymentSection" hidden>
+        <h2 class="section-heading">تأكيد الدفع</h2>
+        <p class="section-note">حوّل المبلغ، ثم اكتب رقمك وارفع صورة التحويل.</p>
+        <div class="steps" aria-label="خطوات تأكيد الدفع">
+          <div class="step active"><span class="step-number">1</span><span>حوّل المبلغ</span></div>
+          <div class="step-line"></div>
+          <div class="step active"><span class="step-number">2</span><span>أرسل الإثبات</span></div>
         </div>
-    </div>
-    
-    <!-- ===== قسم الامتحان (يظهر بعد التأكيد) ===== -->
-    <div id="examSection" class="exam-section">
-        <div class="confirmation-message">
-            <i class="fas fa-check-circle"></i> تم تأكيد حجزك بنجاح!
+
+        <div class="transfer-box">
+          <div class="amount-label">المبلغ المطلوب</div>
+          <div class="amount" id="amountDisplay">— جنيه</div>
+          <hr class="transfer-divider">
+          <div class="cash-label">حوّل إلى رقم فودافون كاش</div>
+          <div class="cash-row">
+            <div class="cash-number" id="cashNumberDisplay" dir="ltr">—</div>
+            <button type="button" class="copy-btn" id="copyCashBtn"><i class="far fa-copy"></i><span>نسخ الرقم</span></button>
+          </div>
+          <div class="account-name">اسم المستلم: <strong id="cashNameDisplay">Abo Zahra</strong></div>
+          <div id="copyFeedback" class="account-name" aria-live="polite"></div>
         </div>
-        <div style="font-size: 16px; font-weight: 700; color: #F59E0B; margin-bottom: 12px;">
-            <i class="fas fa-link"></i> رابط الامتحان الخاص بك
-        </div>
-        <div id="examLinkContainer">
-            <span class="exam-link-placeholder">
-                <i class="fas fa-exclamation-circle"></i> لم يتم تحديد رابط لهذه الشعبة بعد
-            </span>
-        </div>
-        <div style="margin-top: 12px;">
-            <span class="status-badge-exam confirmed" id="examStatusBadge">✅ تم التأكيد</span>
-        </div>
-        <p style="color: rgba(243,232,255,0.3); font-size: 13px; margin-top: 12px;">
-            📌 تم تفعيل رابط الامتحان بنجاح
-        </p>
-    </div>
-    
-    <!-- ===== قسم الدفع (يظهر فقط إذا لم يتم التأكيد بعد) ===== -->
-    <div id="paymentSection">
-        <div class="bank-number">
-            <div class="amount" id="amountDisplay">💰 جاري التحميل...</div>
-            <div style="color: #D4C4E6; margin: 6px 0; font-size: 14px;">تأكيد حجز الامتحان على رقم كاش</div>
-            <div class="number" id="cashNumberDisplay">جاري التحميل...</div>
-            <div style="margin-top: 6px; color: #D4C4E6; font-size: 14px;">
-                📌 باسم: <span class="name" id="cashNameDisplay">Abo Zahra</span>
+
+        <form id="paymentForm" novalidate>
+          <div class="field">
+            <label for="senderPhone">رقم الموبايل اللي حوّلت منه <span class="required">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-mobile-screen-button" aria-hidden="true"></i>
+              <input id="senderPhone" type="tel" inputmode="numeric" autocomplete="tel" maxlength="11" placeholder="01XXXXXXXXX" aria-describedby="phoneHint">
             </div>
-        </div>
-        
-        <div class="form-group">
-            <label>📱 رقم التليفون المحول منه <span class="required">*</span></label>
-            <div class="input-wrapper">
-                <span class="input-icon"><i class="fas fa-mobile-alt"></i></span>
-                <input type="tel" id="senderPhone" placeholder="أدخل رقم التليفون اللي حولت منه" maxlength="11">
+            <div id="phoneHint" class="account-name">اكتب الرقم اللي استخدمته في التحويل.</div>
+          </div>
+
+          <div class="field">
+            <label>صورة التحويل <span class="required">*</span></label>
+            <input type="file" id="screenshotInput" accept="image/*" hidden>
+            <button type="button" class="upload-box" id="uploadArea" aria-controls="screenshotInput">
+              <span class="upload-icon"><i class="fas fa-image" aria-hidden="true"></i></span>
+              <span>
+                <span class="upload-text" id="uploadTitle">اضغط هنا لاختيار صورة التحويل</span>
+                <span class="upload-hint">صورة واضحة من إيصال التحويل · حتى 32 ميجابايت</span>
+              </span>
+            </button>
+            <div id="previewWrap" class="preview-wrap" hidden>
+              <img id="previewImg" class="preview-img" alt="معاينة صورة التحويل">
+              <div class="preview-actions"><span id="fileName">تم اختيار الصورة</span><button type="button" class="remove-btn" id="removeImageBtn"><i class="fas fa-trash-alt"></i> تغيير الصورة</button></div>
             </div>
-        </div>
-        
-        <div class="upload-area" id="uploadArea">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <p>اضغط لرفع صورة الإسكرين</p>
-            <div class="hint">📸 صورة التحويل من فودافون كاش</div>
-            <input type="file" id="screenshotInput" accept="image/*" style="display: none;">
-        </div>
-        
-        <img id="previewImg" class="preview-img">
-        
-        <button class="upload-btn" id="submitBtn">
-            <i class="fas fa-paper-plane"></i> إرسال التأكيد
-        </button>
-    </div>
-    
-    <!-- ===== تم التأكيد مسبقاً (رفع إسكرين) ===== -->
-    <div id="alreadyConfirmed" class="already-confirmed">
-        <span class="icon"><i class="fas fa-check-circle"></i></span>
-        <h3>تم تأكيد حجزك مسبقاً</h3>
-        <p>شكراً لتأكيد حجزك، سيتم التواصل معك قريباً.</p>
-    </div>
-    
-    <!-- ===== رسائل الحالة ===== -->
-    <div id="messageDiv" class="message"></div>
-    
-    <!-- ===== زر واتساب ===== -->
-    <div id="whatsappContainer" style="display: none;">
-        <a href="#" class="btn-wa-exam" id="whatsappBtn" target="_blank">
-            <i class="fab fa-whatsapp"></i> تواصل مع الدعم الفني
-        </a>
-    </div>
-    
-    <div class="footer">
-        <i class="fas fa-crown"></i> Abo Zahra 👑
-    </div>
-</div>
+          </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+          <button type="submit" class="primary-btn" id="submitBtn"><i class="fas fa-paper-plane"></i><span>إرسال إثبات التحويل</span></button>
+        </form>
+      </section>
 
-<script>
-    // ===== إعدادات Firebase الجديدة (Abo Zahra) =====
-    firebase.initializeApp({
-        apiKey: "AIzaSyDrhyNCKO5tzF-tiRQevk12kLM8hAkkr0w",
-        authDomain: "reservations-e411a.firebaseapp.com",
-        databaseURL: "https://reservations-e411a-default-rtdb.firebaseio.com",
-        projectId: "reservations-e411a",
-        storageBucket: "reservations-e411a.firebasestorage.app",
-        messagingSenderId: "197134642642",
-        appId: "1:197134642642:web:a112f2cbf9dc64d0096c0b",
-        measurementId: "G-R0MVFWBG53"
-    });
+      <section id="pendingSection" class="status-panel pending" hidden aria-live="polite">
+        <div class="status-icon"><i class="fas fa-clock"></i></div>
+        <h2>استلمنا إثبات التحويل</h2>
+        <p>إثبات الدفع قيد المراجعة. سنحدّث حالة الحجز بعد المراجعة.</p>
+      </section>
 
+      <section id="examSection" class="status-panel good" hidden aria-live="polite">
+        <div class="status-icon"><i class="fas fa-check"></i></div>
+        <h2>تم تأكيد حجزك</h2>
+        <p id="examMessage">حجزك مؤكد. استخدم الزر لفتح رابط الامتحان.</p>
+        <div id="examLinkContainer"></div>
+      </section>
+
+      <section id="cancelledSection" class="status-panel bad" hidden aria-live="polite">
+        <div class="status-icon"><i class="fas fa-circle-exclamation"></i></div>
+        <h2>الحجز غير نشط حاليًا</h2>
+        <p>تواصل مع الدعم إذا كنت تعتقد أن هناك خطأ في حالة الحجز.</p>
+      </section>
+
+      <div id="messageDiv" class="message" hidden role="status" aria-live="polite"></div>
+      <div id="whatsappContainer" hidden>
+        <a href="#" class="whatsapp-btn" id="whatsappBtn" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> تواصل مع الدعم عبر واتساب</a>
+      </div>
+      <div class="footer"><i class="fas fa-crown" aria-hidden="true"></i> Abo Zahra · لو احتجت مساعدة تواصل مع الدعم</div>
+    </main>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script>
+    // إعدادات Firebase الحالية للموقع — تم الإبقاء عليها ليتوافق التصميم مع نظام الحجز الحالي.
+    const firebaseConfig = {
+      apiKey: "AIzaSyDrhyNCKO5tzF-tiRQevk12kLM8hAkkr0w",
+      authDomain: "reservations-e411a.firebaseapp.com",
+      databaseURL: "https://reservations-e411a-default-rtdb.firebaseio.com",
+      projectId: "reservations-e411a",
+      storageBucket: "reservations-e411a.firebasestorage.app",
+      messagingSenderId: "197134642642",
+      appId: "1:197134642642:web:a112f2cbf9dc64d0096c0b",
+      measurementId: "G-R0MVFWBG53"
+    };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-
-    // ===== مفتاح ImgBB =====
     const IMGBB_API_KEY = 'd96cbbe822e1ace2ef3247edf29d6de2';
+    const DEFAULT_SETTINGS = { whatsapp: '01023456789', cashNumber: '01023456789', examAmount: '50' };
+    let settingsCache = { ...DEFAULT_SETTINGS };
+    let currentReservation = null;
+    let isSubmitting = false;
+    let selectedFile = null;
 
-    // ===== جلب الإعدادات من Firebase =====
-    async function getSettings() {
-        try {
-            const doc = await db.collection('settings').doc('siteSettings').get();
-            if (doc.exists) {
-                return doc.data();
-            }
-        } catch (err) {
-            console.error('خطأ في جلب الإعدادات:', err);
-        }
-        // إعدادات افتراضية
-        return {
-            whatsapp: '01023456789',
-            cashNumber: '01023456789',
-            examAmount: '50'
-        };
-    }
-
-    // ===== جلب رقم الواتساب =====
-    async function getSiteWhatsApp() {
-        const settings = await getSettings();
-        let number = settings.whatsapp || '201282235324';
-        number = number.replace(/[\s\+\-\(\)]/g, '');
-        if (number.startsWith('0')) {
-            number = '20' + number.substring(1);
-        } else if (!number.startsWith('20') && !number.startsWith('+')) {
-            number = '20' + number;
-        }
-        return number;
-    }
-
-    // ===== جلب رقم التحويل =====
-    async function getSiteCashNumber() {
-        const settings = await getSettings();
-        return settings.cashNumber || '01023456789';
-    }
-
-    // ===== جلب قيمة تأكيد الامتحان =====
-    async function getSiteExamAmount() {
-        const settings = await getSettings();
-        return settings.examAmount || '50';
-    }
-
-    // ===== جلب رابط الامتحان للشعبة من Firebase =====
-    async function getExamLinkForSection(sectionName) {
-        if (!sectionName) return '';
-        try {
-            const snapshot = await db.collection('exam_sections')
-                .where('name', '==', sectionName)
-                .limit(1)
-                .get();
-            
-            if (!snapshot.empty) {
-                const data = snapshot.docs[0].data();
-                return data.exam_link || '';
-            }
-            return '';
-        } catch (err) {
-            console.error('خطأ في جلب رابط الامتحان:', err);
-            return '';
-        }
-    }
-
-    // ===== جلب الـ ID من الرابط =====
+    const el = (id) => document.getElementById(id);
+    const loadingState = el('loadingState');
+    const errorState = el('errorState');
+    const customerInfo = el('customerInfo');
+    const paymentSection = el('paymentSection');
+    const pendingSection = el('pendingSection');
+    const examSection = el('examSection');
+    const cancelledSection = el('cancelledSection');
+    const examLinkContainer = el('examLinkContainer');
+    const messageDiv = el('messageDiv');
+    const fileInput = el('screenshotInput');
+    const previewImg = el('previewImg');
+    const previewWrap = el('previewWrap');
+    const submitBtn = el('submitBtn');
+    const senderPhoneInput = el('senderPhone');
     const urlParams = new URLSearchParams(window.location.search);
     const reservationId = urlParams.get('id');
 
-    // ===== عناصر الصفحة =====
-    const customerInfo = document.getElementById('customerInfo');
-    const examSection = document.getElementById('examSection');
-    const examLinkContainer = document.getElementById('examLinkContainer');
-    const paymentSection = document.getElementById('paymentSection');
-    const alreadyConfirmed = document.getElementById('alreadyConfirmed');
-    const messageDiv = document.getElementById('messageDiv');
-    const uploadArea = document.getElementById('uploadArea');
-    const fileInput = document.getElementById('screenshotInput');
-    const previewImg = document.getElementById('previewImg');
-    const submitBtn = document.getElementById('submitBtn');
-    const senderPhoneInput = document.getElementById('senderPhone');
-    const cashNumberDisplay = document.getElementById('cashNumberDisplay');
-    const cashNameDisplay = document.getElementById('cashNameDisplay');
-    const amountDisplay = document.getElementById('amountDisplay');
-    const examStatusBadge = document.getElementById('examStatusBadge');
-    const whatsappBtn = document.getElementById('whatsappBtn');
-    const whatsappContainer = document.getElementById('whatsappContainer');
-
-    // ===== تحديث معلومات الدفع من Firebase =====
-    async function updatePaymentInfo() {
-        const settings = await getSettings();
-        if (cashNumberDisplay) cashNumberDisplay.textContent = settings.cashNumber || '01023456789';
-        if (cashNameDisplay) cashNameDisplay.textContent = 'Abo Zahra';
-        if (amountDisplay) amountDisplay.textContent = `💰 ${settings.examAmount || '50'} جنيه`;
+    async function getSettings() {
+      try {
+        const doc = await db.collection('settings').doc('siteSettings').get();
+        if (doc.exists) return { ...DEFAULT_SETTINGS, ...doc.data() };
+      } catch (error) {
+        console.error('تعذّر تحميل إعدادات الموقع:', error);
+      }
+      return { ...DEFAULT_SETTINGS };
     }
 
-    // ===== تحديث واجهة العميل بناءً على حالة الحجز =====
-    async function updateClientUI(data) {
-        const status = data.status || 'pending';
-        const sectionName = data.section || '';
-        
-        // تحديث معلومات العميل
-        customerInfo.innerHTML = `
-            <p>
-                <span class="label">👤 الاسم</span>
-                <span class="value">${data.name || '—'}</span>
-            </p>
-            <p>
-                <span class="label">📱 رقم الواتساب</span>
-                <span class="value" style="direction:ltr;">${data.phone || '—'}</span>
-            </p>
-            <p>
-                <span class="label">📚 الشعبة</span>
-                <span class="value">${sectionName || '—'}</span>
-            </p>
-            <p>
-                <span class="label">📅 تاريخ الحجز</span>
-                <span class="value">${formatDate(data.created_at)}</span>
-            </p>
-        `;
-
-        // تحديث زر واتساب
-        const waNumber = await getSiteWhatsApp();
-        const waMsg = `🎓 استفسار عن حجز الامتحان - Abo Zahra\n👤 ${data.name || '—'}\n📚 الشعبة: ${sectionName || '—'}\n📱 واتساب: ${data.phone || '—'}`;
-        whatsappBtn.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMsg)}`;
-        whatsappContainer.style.display = 'block';
-
-        // التحقق من حالة الحجز
-        if (status === 'confirmed') {
-            // تم التأكيد - عرض رابط الامتحان
-            paymentSection.style.display = 'none';
-            alreadyConfirmed.style.display = 'none';
-            
-            // جلب رابط الامتحان من Firebase
-            const examLinkUrl = await getExamLinkForSection(sectionName);
-            
-            if (examLinkUrl) {
-                examLinkContainer.innerHTML = `
-                    <a href="${examLinkUrl}" class="exam-link" target="_blank">
-                        <i class="fas fa-external-link-alt"></i> ${examLinkUrl}
-                    </a>
-                `;
-            } else {
-                examLinkContainer.innerHTML = `
-                    <span class="exam-link-placeholder">
-                        <i class="fas fa-exclamation-circle"></i> لم يتم تحديد رابط لهذه الشعبة بعد
-                    </span>
-                `;
-            }
-            
-            examStatusBadge.textContent = '✅ تم التأكيد';
-            examStatusBadge.className = 'status-badge-exam confirmed';
-            examSection.style.display = 'block';
-            
-        } else if (data.payment_proof_url) {
-            // تم رفع إسكرين لكن لم يتم التأكيد بعد من الإدارة
-            paymentSection.style.display = 'none';
-            examSection.style.display = 'none';
-            alreadyConfirmed.style.display = 'block';
-            alreadyConfirmed.innerHTML = `
-                <span class="icon"><i class="fas fa-clock" style="color: #FBBF24;"></i></span>
-                <h3 style="color: #FBBF24;">في انتظار تأكيد الإدارة</h3>
-                <p>تم استلام إسكرين التحويل، سيتم تأكيد حجزك خلال 24 ساعة.</p>
-            `;
-            
-        } else {
-            // لم يتم رفع إسكرين ولا تم التأكيد - عرض نموذج الدفع
-            paymentSection.style.display = 'block';
-            document.querySelector('.bank-number').style.display = 'block';
-            document.getElementById('uploadArea').style.display = 'block';
-            document.getElementById('submitBtn').style.display = 'flex';
-            examSection.style.display = 'none';
-            alreadyConfirmed.style.display = 'none';
-            
-            // تحديث معلومات الدفع
-            await updatePaymentInfo();
-        }
+    function normalizePhoneNumber(value) {
+      return String(value || '').replace(/[\s+\-()]/g, '');
     }
 
-    // ===== دوال مساعدة =====
-    function formatDate(ts) {
-        if (!ts) return '—';
-        let d = ts.toDate ? ts.toDate() : (ts.seconds ? new Date(ts.seconds * 1000) : new Date(ts));
-        return d.toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    function getWhatsAppNumber() {
+      let number = normalizePhoneNumber(settingsCache.whatsapp || '201282235324');
+      if (number.startsWith('0')) number = '20' + number.slice(1);
+      else if (!number.startsWith('20')) number = '20' + number;
+      return number;
+    }
+
+    function makeWhatsAppLink(data) {
+      const message = [
+        '🎓 استفسار عن حجز الامتحان - Abo Zahra',
+        `👤 الاسم: ${data.name || '—'}`,
+        `📚 الشعبة: ${data.section || '—'}`,
+        `📱 واتساب: ${data.phone || '—'}`
+      ].join('\n');
+      return `https://wa.me/${getWhatsAppNumber()}?text=${encodeURIComponent(message)}`;
+    }
+
+    function formatDate(timestamp) {
+      if (!timestamp) return '—';
+      let date;
+      if (typeof timestamp.toDate === 'function') date = timestamp.toDate();
+      else if (timestamp.seconds) date = new Date(timestamp.seconds * 1000);
+      else date = new Date(timestamp);
+      if (Number.isNaN(date.getTime())) return '—';
+      return date.toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric' });
     }
 
     function showMessage(message, type = 'loading') {
-        messageDiv.style.display = 'block';
-        messageDiv.className = 'message ' + type;
-        messageDiv.innerHTML = message;
+      messageDiv.textContent = message;
+      messageDiv.className = `message ${type}`;
+      messageDiv.hidden = false;
     }
 
     function hideMessage() {
-        messageDiv.style.display = 'none';
-        messageDiv.className = 'message';
-        messageDiv.innerHTML = '';
+      messageDiv.hidden = true;
+      messageDiv.textContent = '';
+      messageDiv.className = 'message';
     }
 
-    // ===== رفع الصورة على ImgBB =====
+    function showFatalError(message) {
+      loadingState.hidden = true;
+      errorState.textContent = message;
+      errorState.hidden = false;
+      customerInfo.hidden = true;
+      paymentSection.hidden = true;
+      pendingSection.hidden = true;
+      examSection.hidden = true;
+      cancelledSection.hidden = true;
+      el('whatsappContainer').hidden = true;
+    }
+
+    function renderCustomerInfo(data) {
+      const details = [
+        ['الاسم', data.name || '—', false],
+        ['رقم الواتساب', data.phone || '—', true],
+        ['الشعبة', data.section || '—', false],
+        ['تاريخ الحجز', formatDate(data.created_at), false]
+      ];
+      customerInfo.replaceChildren();
+      const heading = document.createElement('div');
+      heading.className = 'customer-title';
+      heading.innerHTML = '<i class="fas fa-clipboard-check" aria-hidden="true"></i><span>بيانات الحجز</span>';
+      customerInfo.appendChild(heading);
+      const grid = document.createElement('div');
+      grid.className = 'details-grid';
+      details.forEach(([label, value, ltr]) => {
+        const item = document.createElement('div');
+        item.className = 'detail';
+        const labelEl = document.createElement('div');
+        labelEl.className = 'detail-label';
+        labelEl.textContent = label;
+        const valueEl = document.createElement('div');
+        valueEl.className = `detail-value${ltr ? ' ltr' : ''}`;
+        valueEl.textContent = value;
+        item.append(labelEl, valueEl);
+        grid.appendChild(item);
+      });
+      customerInfo.appendChild(grid);
+      customerInfo.hidden = false;
+    }
+
+    async function updatePaymentInfo() {
+      el('cashNumberDisplay').textContent = settingsCache.cashNumber || DEFAULT_SETTINGS.cashNumber;
+      el('cashNameDisplay').textContent = 'Abo Zahra';
+      el('amountDisplay').textContent = `${settingsCache.examAmount || DEFAULT_SETTINGS.examAmount} جنيه`;
+    }
+
+    async function getExamLinkForSection(sectionName) {
+      if (!sectionName) return '';
+      try {
+        const snapshot = await db.collection('exam_sections')
+          .where('name', '==', sectionName)
+          .limit(1)
+          .get();
+        if (!snapshot.empty) return snapshot.docs[0].data().exam_link || '';
+      } catch (error) {
+        console.error('تعذّر تحميل رابط الامتحان:', error);
+      }
+      return '';
+    }
+
+    function setWhatsApp(data) {
+      el('whatsappBtn').href = makeWhatsAppLink(data);
+      el('whatsappContainer').hidden = false;
+    }
+
+    function setOnlyState(activeSection) {
+      paymentSection.hidden = activeSection !== paymentSection;
+      pendingSection.hidden = activeSection !== pendingSection;
+      examSection.hidden = activeSection !== examSection;
+      cancelledSection.hidden = activeSection !== cancelledSection;
+    }
+
+    async function renderReservation(data) {
+      currentReservation = data;
+      loadingState.hidden = true;
+      errorState.hidden = true;
+      renderCustomerInfo(data);
+      setWhatsApp(data);
+      hideMessage();
+
+      const status = String(data.status || 'pending').toLowerCase();
+      if (status === 'cancelled' || status === 'rejected') {
+        setOnlyState(cancelledSection);
+        return;
+      }
+
+      if (status === 'confirmed') {
+        setOnlyState(examSection);
+        el('examMessage').textContent = 'حجزك مؤكد. اضغط على الزر لفتح رابط الامتحان.';
+        examLinkContainer.replaceChildren();
+        const rawLink = await getExamLinkForSection(data.section || '');
+        if (rawLink) {
+          try {
+            const url = new URL(rawLink);
+            if (url.protocol === 'https:' || url.protocol === 'http:') {
+              const link = document.createElement('a');
+              link.className = 'exam-link-btn';
+              link.href = url.href;
+              link.target = '_blank';
+              link.rel = 'noopener noreferrer';
+              link.innerHTML = '<i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i><span>فتح رابط الامتحان</span>';
+              examLinkContainer.appendChild(link);
+            }
+          } catch (_) { /* الرابط غير صالح أو لم يتم تعيينه بعد */ }
+        }
+        if (!examLinkContainer.childElementCount) {
+          el('examMessage').textContent = 'تم تأكيد الحجز، لكن رابط الامتحان غير متاح حاليًا. تواصل مع الدعم للمساعدة.';
+        }
+        return;
+      }
+
+      if (data.payment_proof_url) {
+        setOnlyState(pendingSection);
+        return;
+      }
+
+      setOnlyState(paymentSection);
+      await updatePaymentInfo();
+    }
+
     async function uploadToImgBB(file) {
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('key', IMGBB_API_KEY);
-        
-        try {
-            const response = await fetch('https://api.imgbb.com/1/upload', {
-                method: 'POST',
-                body: formData
-            });
-            
-            const result = await response.json();
-            if (result.success) {
-                return result.data.url;
-            } else {
-                throw new Error(result.error?.message || 'فشل رفع الصورة');
-            }
-        } catch (error) {
-            console.error('ImgBB Upload Error:', error);
-            throw error;
-        }
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('key', IMGBB_API_KEY);
+      const response = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: formData });
+      let result;
+      try { result = await response.json(); } catch (_) { throw new Error('تعذّر قراءة نتيجة رفع الصورة. حاول مرة أخرى.'); }
+      if (!response.ok || !result.success || !result.data || !result.data.url) {
+        throw new Error((result.error && result.error.message) || 'فشل رفع الصورة. حاول مرة أخرى.');
+      }
+      return result.data.url;
     }
 
-    // ===== تحميل بيانات العميل =====
-    if (!reservationId) {
-        customerInfo.innerHTML = `
-            <p style="color: #F87171; text-align: center; font-weight: 700;">
-                ❌ رابط غير صالح
-            </p>
-            <p style="text-align: center; color: rgba(243,232,255,0.3); margin-top: 8px;">
-                عذراً، لم نتمكن من العثور على حجزك.
-            </p>
-        `;
-        paymentSection.style.display = 'none';
-        examSection.style.display = 'none';
-        alreadyConfirmed.style.display = 'none';
-    } else {
-        // تحديث معلومات الدفع أولاً
-        updatePaymentInfo();
-        
-        // الاستماع للتغييرات في الوقت الفعلي
-        db.collection('exam_reservations').doc(reservationId).onSnapshot(async doc => {
-            if (doc.exists) {
-                const data = doc.data();
-                await updateClientUI(data);
-            } else {
-                customerInfo.innerHTML = `
-                    <p style="color: #F87171; text-align: center; font-weight: 700;">
-                        ❌ حجز غير موجود
-                    </p>
-                    <p style="text-align: center; color: rgba(243,232,255,0.3); margin-top: 8px;">
-                        عذراً، لم نتمكن من العثور على حجزك.
-                    </p>
-                `;
-                paymentSection.style.display = 'none';
-                examSection.style.display = 'none';
-                alreadyConfirmed.style.display = 'none';
-            }
-        }, err => {
-            console.error(err);
-            customerInfo.innerHTML = `
-                <p style="color: #F87171; text-align: center; font-weight: 700;">
-                    ❌ حدث خطأ
-                </p>
-                <p style="text-align: center; color: rgba(243,232,255,0.3); margin-top: 8px;">
-                    يرجى المحاولة مرة أخرى لاحقاً.
-                </p>
-            `;
-            paymentSection.style.display = 'none';
-            examSection.style.display = 'none';
-            alreadyConfirmed.style.display = 'none';
-        });
+    function clearSelectedImage() {
+      selectedFile = null;
+      fileInput.value = '';
+      previewImg.removeAttribute('src');
+      previewWrap.hidden = true;
+      el('uploadTitle').textContent = 'اضغط هنا لاختيار صورة التحويل';
     }
 
-    // ===== رفع الصورة =====
-    if (uploadArea) {
-        uploadArea.addEventListener('click', () => fileInput.click());
-    }
+    el('uploadArea').addEventListener('click', () => fileInput.click());
+    el('removeImageBtn').addEventListener('click', clearSelectedImage);
 
-    if (fileInput) {
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                if (file.size > 32 * 1024 * 1024) {
-                    showMessage('⚠️ حجم الصورة كبير جداً (الحد الأقصى 32 ميجابايت)', 'error');
-                    this.value = '';
-                    previewImg.style.display = 'none';
-                    return;
-                }
-                
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    previewImg.src = event.target.result;
-                    previewImg.style.display = 'block';
-                    hideMessage();
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    }
-
-    // ===== إرسال التأكيد =====
-    if (submitBtn) {
-        submitBtn.onclick = async function() {
-            const file = fileInput.files[0];
-            const senderPhone = senderPhoneInput.value.trim();
-            
-            if (!file) {
-                showMessage('❌ يرجى رفع صورة الإسكرين', 'error');
-                return;
-            }
-            if (!senderPhone) {
-                showMessage('❌ يرجى كتابة رقم التليفون المحول منه', 'error');
-                return;
-            }
-            if (senderPhone.length < 10) {
-                showMessage('❌ رقم التليفون غير صحيح', 'error');
-                return;
-            }
-            
-            submitBtn.disabled = true;
-            showMessage('<span class="loading-spinner"></span> جاري رفع الإسكرين...', 'loading');
-            
-            try {
-                const imageUrl = await uploadToImgBB(file);
-                
-                await db.collection('exam_reservations').doc(reservationId).update({
-                    payment_proof_url: imageUrl,
-                    sender_phone: senderPhone,
-                    payment_submitted_at: firebase.firestore.FieldValue.serverTimestamp(),
-                    payment_confirmed: false
-                });
-                
-                showMessage('✅ تم إرسال التأكيد بنجاح!<br>سيتم مراجعة التحويل قريباً وسنصلك رسالة تأكيد.', 'success');
-                
-                // إخفاء نموذج الدفع
-                paymentSection.style.display = 'none';
-                alreadyConfirmed.style.display = 'block';
-                alreadyConfirmed.innerHTML = `
-                    <span class="icon"><i class="fas fa-clock" style="color: #FBBF24;"></i></span>
-                    <h3 style="color: #FBBF24;">في انتظار تأكيد الإدارة</h3>
-                    <p>تم استلام إسكرين التحويل، سيتم تأكيد حجزك خلال 24 ساعة.</p>
-                `;
-                
-            } catch(err) {
-                console.error(err);
-                showMessage('❌ حدث خطأ: ' + (err.message || 'حاول مرة أخرى'), 'error');
-                submitBtn.disabled = false;
-            }
-        };
-    }
-
-    // ===== الاستماع لتغييرات الإعدادات =====
-    window.addEventListener('storage', function(e) {
-        if (e.key === 'siteSettings') {
-            // تحديث معلومات الدفع عند تغيير الإعدادات
-            updatePaymentInfo();
-        }
+    fileInput.addEventListener('change', (event) => {
+      const file = event.target.files && event.target.files[0];
+      hideMessage();
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        clearSelectedImage();
+        showMessage('من فضلك اختار صورة للتحويل.', 'error');
+        return;
+      }
+      if (file.size > 32 * 1024 * 1024) {
+        clearSelectedImage();
+        showMessage('حجم الصورة أكبر من 32 ميجابايت. اختار صورة أصغر.', 'error');
+        return;
+      }
+      selectedFile = file;
+      el('uploadTitle').textContent = 'تم اختيار صورة التحويل';
+      el('fileName').textContent = file.name;
+      const reader = new FileReader();
+      reader.onload = () => {
+        previewImg.src = reader.result;
+        previewWrap.hidden = false;
+      };
+      reader.onerror = () => showMessage('تعذّر عرض الصورة. جرّب اختيارها مرة أخرى.', 'error');
+      reader.readAsDataURL(file);
     });
-</script>
+
+    el('copyCashBtn').addEventListener('click', async () => {
+      const number = el('cashNumberDisplay').textContent.trim();
+      if (!number || number === '—') return;
+      try {
+        await navigator.clipboard.writeText(number);
+        el('copyFeedback').textContent = 'تم نسخ الرقم.';
+      } catch (_) {
+        const temporaryInput = document.createElement('textarea');
+        temporaryInput.value = number;
+        temporaryInput.style.position = 'fixed';
+        temporaryInput.style.opacity = '0';
+        document.body.appendChild(temporaryInput);
+        temporaryInput.select();
+        const copied = document.execCommand('copy');
+        temporaryInput.remove();
+        el('copyFeedback').textContent = copied ? 'تم نسخ الرقم.' : 'انسخ الرقم يدويًا من المربع أعلاه.';
+      }
+    });
+
+    el('paymentForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (isSubmitting) return;
+      hideMessage();
+      const senderPhone = senderPhoneInput.value.trim().replace(/[\s-]/g, '');
+      if (!/^01\d{9}$/.test(senderPhone)) {
+        showMessage('اكتب رقم الموبايل المحوّل منه بشكل صحيح (11 رقم ويبدأ بـ 01).', 'error');
+        senderPhoneInput.focus();
+        return;
+      }
+      if (!selectedFile) {
+        showMessage('اختار صورة التحويل قبل الإرسال.', 'error');
+        el('uploadArea').focus();
+        return;
+      }
+      if (!reservationId || !currentReservation) {
+        showMessage('تعذّر العثور على الحجز. افتح رابط الحجز الصحيح وحاول مرة أخرى.', 'error');
+        return;
+      }
+
+      isSubmitting = true;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin" aria-hidden="true"></i><span>جاري إرسال الإثبات...</span>';
+      showMessage('جاري رفع صورة التحويل وإرسالها للمراجعة...', 'loading');
+      try {
+        const imageUrl = await uploadToImgBB(selectedFile);
+        await db.collection('exam_reservations').doc(reservationId).update({
+          payment_proof_url: imageUrl,
+          sender_phone: senderPhone,
+          payment_submitted_at: firebase.firestore.FieldValue.serverTimestamp(),
+          payment_confirmed: false
+        });
+        showMessage('تم استلام إثبات التحويل. سيتم مراجعته قبل تأكيد الحجز.', 'success');
+        setOnlyState(pendingSection);
+        clearSelectedImage();
+        senderPhoneInput.value = '';
+      } catch (error) {
+        console.error('خطأ في إرسال إثبات الدفع:', error);
+        showMessage(error.message || 'حدث خطأ أثناء الإرسال. حاول مرة أخرى.', 'error');
+      } finally {
+        isSubmitting = false;
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane" aria-hidden="true"></i><span>إرسال إثبات التحويل</span>';
+      }
+    });
+
+    async function init() {
+      if (!reservationId) {
+        showFatalError('رابط الحجز غير مكتمل. افتح رابط تأكيد الحجز الذي وصلك بعد التسجيل.');
+        return;
+      }
+      settingsCache = await getSettings();
+      await updatePaymentInfo();
+      db.collection('exam_reservations').doc(reservationId).onSnapshot(async (doc) => {
+        if (!doc.exists) {
+          showFatalError('لم يتم العثور على هذا الحجز. تأكد من أنك فتحت الرابط الصحيح.');
+          return;
+        }
+        try {
+          await renderReservation(doc.data());
+        } catch (error) {
+          console.error('خطأ في عرض بيانات الحجز:', error);
+          showFatalError('حدثت مشكلة أثناء تحميل بيانات الحجز. حاول تحديث الصفحة مرة أخرى.');
+        }
+      }, (error) => {
+        console.error('خطأ في الاتصال بقاعدة البيانات:', error);
+        showFatalError('تعذّر تحميل الحجز الآن. تحقق من اتصال الإنترنت وحاول مرة أخرى.');
+      });
+    }
+
+    init();
+  </script>
 </body>
 </html>
